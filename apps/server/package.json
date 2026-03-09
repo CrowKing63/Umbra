@@ -1,0 +1,22 @@
+{
+  "name": "@umbra/server",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@umbra/shared-types": "workspace:*",
+    "fastify": "^4.25.0",
+    "argon2": "^0.31.0",
+    "@fastify/cookie": "^9.0.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.0"
+  }
+}

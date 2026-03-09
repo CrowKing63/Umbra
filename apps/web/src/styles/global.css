@@ -1,0 +1,120 @@
+:root {
+  --color-bg: #faf9f7;
+  --color-bg-secondary: #f0eeea;
+  --color-bg-tertiary: #e6e3de;
+  --color-surface: #ffffff;
+  --color-surface-hover: #f5f3f0;
+  --color-border: #d8d5cf;
+  --color-border-light: #ebe8e3;
+  --color-text: #1a1918;
+  --color-text-secondary: #5c5956;
+  --color-text-muted: #8a8682;
+   --color-accent: #3b5998;
+   --color-accent-hover: #4a6ab9;
+   --color-danger: #c53b3b;
+   --color-success: #22c55e;
+   --color-warning: #f59e0b;
+  
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  
+  --sidebar-width: 260px;
+  --sidebar-collapsed-width: 56px;
+  --topbar-height: 52px;
+  --panel-width: 320px;
+  
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+}
+
+[data-theme="dark"] {
+  --color-bg: #141413;
+  --color-bg-secondary: #1e1d1c;
+  --color-bg-tertiary: #2a2928;
+  --color-surface: #1c1b1a;
+  --color-surface-hover: #262524;
+  --color-border: #3a3938;
+  --color-border-light: #252423;
+  --color-text: #f0efed;
+  --color-text-secondary: #a8a6a3;
+  --color-text-muted: #6b6966;
+   --color-accent: #5a7cc9;
+   --color-accent-hover: #6d8ddb;
+   --color-success: #4ade80;
+   --color-warning: #fbbf24;
+  
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input, textarea {
+  font-family: inherit;
+  border: none;
+  outline: none;
+  background: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}

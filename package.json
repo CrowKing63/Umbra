@@ -1,0 +1,21 @@
+{
+  "name": "umbra",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Local-first Markdown writing server",
+  "scripts": {
+    "dev": "pnpm -r --parallel dev",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "pnpm -r lint",
+    "verify": "pnpm typecheck && pnpm build",
+    "test:health": "node -e \"require('http').get('http://localhost:3847/api/v1/health', r=>{r.on('data',d=>process.stdout.write(d));r.on('end',()=>process.exit(0))}).on('error',e=>{console.error(e);process.exit(1)})\""
+  },
+  "engines": {
+    "node": ">=18",
+    "pnpm": ">=8"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0"
+  }
+}
