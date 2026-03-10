@@ -10,8 +10,8 @@
     "lint": "pnpm -r lint",
     "verify": "pnpm typecheck && pnpm build",
     "test:health": "node -e \"require('http').get('http://localhost:3847/api/v1/health', r=>{r.on('data',d=>process.stdout.write(d));r.on('end',()=>process.exit(0))}).on('error',e=>{console.error(e);process.exit(1)})\"",
-    "pack:win": "pnpm --filter @umbra/shared-types build && pnpm --filter @umbra/server build && pnpm --filter @umbra/web build && pnpm --filter @umbra/desktop pack:win",
-    "release": "pnpm --filter @umbra/shared-types build && pnpm --filter @umbra/server build && pnpm --filter @umbra/web build && pnpm --filter @umbra/desktop release"
+    "pack:win": "pnpm build && pnpm --filter @umbra/desktop pack:win",
+    "release": "pnpm build && pnpm --filter @umbra/desktop release"
   },
   "engines": {
     "node": ">=18",
