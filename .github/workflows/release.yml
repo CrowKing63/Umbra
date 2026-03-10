@@ -33,7 +33,9 @@ jobs:
       - name: Verify shared-types dist
         shell: bash
         run: |
-          ls -la packages/shared-types/dist/ 2>&1 || echo "WARN: dist not found"
+          test -f packages/shared-types/dist/index.d.ts || { echo "ERROR: packages/shared-types/dist/index.d.ts not found"; exit 1; }
+          echo "OK: shared-types dist verified"
+          ls -la packages/shared-types/dist/
 
       - name: Build server
         run: pnpm --filter @umbra/server build
