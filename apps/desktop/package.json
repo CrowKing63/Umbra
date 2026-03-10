@@ -69,7 +69,8 @@
     "publish": {
       "provider": "github",
       "owner": "CrowKing63",
-      "repo": "Umbra"
+      "repo": "Umbra",
+      "releaseType": "release"
     },
     "win": {
       "target": [
