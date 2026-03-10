@@ -86,6 +86,40 @@ The server creates `.umbra-data/` relative to its `cwd` (not in the user's docum
 - `settings.json` — persisted settings
 - Snapshots for history (managed by `history-service.ts`)
 
+## Release automation
+
+Windows installer is built and published automatically via `.github/workflows/release.yml` when a `v*` tag is pushed.
+
+### How to release
+
+```bash
+# 버전을 package.json에 직접 바꿀 필요 없음 — CI가 태그에서 자동 추출해서 주입
+git tag v1.2.3
+git push origin v1.2.3
+```
+
+GitHub Actions가 다음을 순서대로 실행:
+1. `packages/shared-types` 빌드 (dist/ 검증)
+2. `apps/server` 빌드
+3. `apps/web` 빌드
+4. `apps/desktop` 빌드
+5. 태그에서 버전 추출 → `apps/desktop/package.json`에 주입
+6. `electron-builder --win --publish=always` → GitHub Release 자동 생성
+
+결과물: `Umbra Setup X.Y.Z.exe` (NSIS 인스톨러) + `Umbra X.Y.Z.exe` (포터블)
+
+### Key decisions (do not revert)
+
+- **`packages/shared-types/dist/`는 git에 커밋**: CI 환경에서 pnpm 심링크를 TypeScript가 탐색하지 못하는 문제 우회. `.gitignore`에 `!packages/shared-types/dist/` 예외 있음.
+- **`electron`은 `devDependencies`**: electron-builder는 `dependencies`에 electron이 있으면 빌드를 거부함.
+- **`"releaseType": "release"`**: `"draft"`로 두면 GitHub 홈화면 미노출, electron-updater가 업데이트로 인식 안 함.
+- **`apps/desktop/assets/icon.ico`**: `png-to-ico`로 생성한 올바른 ICO 포맷. PNG를 .ico로 이름만 바꾸면 electron-builder가 거부함.
+- **버전 자동 주입**: `apps/desktop/package.json`의 `"version"` 필드는 CI가 덮어씀. 로컬에서 수동으로 올릴 필요 없음.
+
+### Pending
+
+- Windows 로그온 자동실행: `app.setLoginItemSettings({ openAtLogin })` — Electron API로 구현 가능, 아직 미구현.
+
 ## Session work orders
 
 Incremental development is tracked in `docs/umbra-session-work-orders.md` (UMB-01 through UMB-14). Each work order is a self-contained prompt. To continue from a specific milestone:
@@ -94,4 +128,4 @@ Incremental development is tracked in `docs/umbra-session-work-orders.md` (UMB-0
 docs/umbra-session-work-orders.md를 읽고 UMB-08만 수행해줘.
 ```
 
-Current status: UMB-01 through UMB-13 implemented, UMB-14 (hardening/packaging) partially complete. PDF export is a stub (returns raw markdown; client is responsible for rendering). Windows auto-start and `apps/desktop/build/icon.ico` are still pending.
+Current status: UMB-01 through UMB-13 implemented, UMB-14 (hardening/packaging) partially complete. PDF export is a stub (returns raw markdown; client is responsible for rendering). Windows auto-start is pending.
