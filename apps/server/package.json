@@ -12,8 +12,9 @@
   "dependencies": {
     "@umbra/shared-types": "workspace:*",
     "fastify": "^4.25.0",
-    "argon2": "^0.31.0",
-    "@fastify/cookie": "^9.0.0"
+    "@node-rs/argon2": "^2.0.0",
+    "@fastify/cookie": "^9.0.0",
+    "@fastify/static": "^7.0.0"
   },
   "devDependencies": {
     "tsx": "^4.7.0",

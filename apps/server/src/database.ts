@@ -13,7 +13,7 @@ const DEFAULT_SETTINGS: Settings = {
   passwordHash: null,
 };
 
-const DATA_DIR = path.join(process.cwd(), '.umbra-data');
+const DATA_DIR = path.join(process.env.UMBRA_DATA_DIR || process.cwd(), '.umbra-data');
 const SETTINGS_FILE = path.join(DATA_DIR, 'settings.json');
 
 function ensureDataDir(): void {

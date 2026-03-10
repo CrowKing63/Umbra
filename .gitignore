@@ -9,6 +9,10 @@ node_modules
 dist
 build
 out
+
+# Exception: NSIS installer script (source file, not build artifact)
+!apps/desktop/build/
+!apps/desktop/build/installer.nsh
 .next
 
 # Environment variables

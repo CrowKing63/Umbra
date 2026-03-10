@@ -1,6 +1,6 @@
 {
   "name": "@umbra/desktop",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "private": true,
   "main": "./dist/main.js",
   "scripts": {
@@ -8,15 +8,19 @@
     "build": "tsc",
     "start": "electron .",
     "typecheck": "tsc --noEmit",
-    "package": "pnpm build && electron-builder"
+    "package": "pnpm build && electron-builder",
+    "pack:win": "pnpm build && electron-builder --win",
+    "release": "pnpm build && electron-builder --win --publish=always"
   },
   "dependencies": {
     "@umbra/shared-types": "workspace:*",
-    "electron": "^28.0.0"
+    "electron": "^28.0.0",
+    "electron-updater": "^6.1.0"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",
     "electron-builder": "^24.13.0",
+    "png-to-ico": "^3.0.1",
     "tsx": "^4.7.0",
     "typescript": "^5.3.0"
   },
@@ -30,17 +34,43 @@
       "dist/**/*",
       "node_modules/**/*"
     ],
+    "extraResources": [
+      {
+        "from": "../../apps/server/dist",
+        "to": "server",
+        "filter": ["**/*"]
+      },
+      {
+        "from": "../../apps/server/node_modules",
+        "to": "server/node_modules",
+        "filter": ["**/*"]
+      },
+      {
+        "from": "../../apps/web/dist",
+        "to": "web",
+        "filter": ["**/*"]
+      },
+      {
+        "from": "assets",
+        "to": "assets",
+        "filter": ["**/*"]
+      }
+    ],
+    "publish": {
+      "provider": "github",
+      "owner": "CrowKing63",
+      "repo": "Umbra"
+    },
     "win": {
-      "target": [
-        "nsis"
-      ],
-      "icon": "build/icon.ico"
+      "target": ["nsis", "portable"],
+      "icon": "assets/icon.ico"
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
-      "createStartMenuShortcut": true
+      "createStartMenuShortcut": true,
+      "include": "build/installer.nsh"
     }
   }
 }

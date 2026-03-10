@@ -1,5 +1,6 @@
 import fastify, { type FastifyRequest, type FastifyReply } from 'fastify';
 import fastifyCookie from '@fastify/cookie';
+import fastifyStatic from '@fastify/static';
 import path from 'path';
 import fs from 'fs';
 import { getSettings, updateSettings } from './database';
@@ -870,10 +871,20 @@ app.post('/api/v1/history/restore', async (request) => {
 (async () => {
   try {
     await app.register(fastifyCookie);
-    
+
     // Register auth hook
     app.addHook('preHandler', requireAuth);
-    
+
+    // Serve web app static files in production (Electron sets UMBRA_STATIC_PATH)
+    const staticPath = process.env.UMBRA_STATIC_PATH;
+    if (staticPath && fs.existsSync(staticPath)) {
+      await app.register(fastifyStatic, { root: staticPath, prefix: '/', wildcard: false });
+      // SPA fallback: serve index.html for client-side routes
+      app.setNotFoundHandler((_request, reply) => {
+        reply.sendFile('index.html', staticPath);
+      });
+    }
+
     const settings = getSettings();
     await app.listen({ port: settings.port, host: settings.lanEnabled ? '0.0.0.0' : '127.0.0.1' });
     console.log(`Server running at http://localhost:${settings.port}`);

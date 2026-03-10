@@ -1,4 +1,4 @@
-import argon2 from 'argon2';
+import { hash as argon2Hash, verify as argon2Verify, Algorithm } from '@node-rs/argon2';
 import crypto from 'crypto';
 
 const SESSION_MAX_AGE = 7 * 24 * 60 * 60 * 1000; // 7 days in ms
@@ -22,8 +22,8 @@ setInterval(() => {
 }, CLEANUP_INTERVAL).unref();
 
 export async function hashPassword(password: string): Promise<string> {
-  return argon2.hash(password, {
-    type: argon2.argon2id,
+  return argon2Hash(password, {
+    algorithm: Algorithm.Argon2id,
     memoryCost: 2 ** 16,
     timeCost: 3,
     parallelism: 1,
@@ -32,7 +32,7 @@ export async function hashPassword(password: string): Promise<string> {
 
 export async function verifyPassword(hash: string, password: string): Promise<boolean> {
   try {
-    return argon2.verify(hash, password);
+    return argon2Verify(hash, password);
   } catch {
     return false;
   }

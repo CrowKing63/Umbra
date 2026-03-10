@@ -4,7 +4,7 @@ import crypto from 'crypto';
 import type { Snapshot, HistoryEntry, HistoryListResponse } from '@umbra/shared-types';
 import { getRootPath } from './sandbox';
 
-const HISTORY_DIR = path.join(process.cwd(), '.umbra-data', 'history');
+const HISTORY_DIR = path.join(process.env.UMBRA_DATA_DIR || process.cwd(), '.umbra-data', 'history');
 const SNAPSHOTS_DIR = path.join(HISTORY_DIR, 'snapshots');
 const METADATA_FILE = path.join(HISTORY_DIR, 'metadata.json');
 
