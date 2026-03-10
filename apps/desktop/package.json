@@ -1,6 +1,6 @@
 {
   "name": "@umbra/desktop",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "private": true,
   "description": "Umbra desktop application - local-first Markdown writing server",
   "author": "CrowKing63",
