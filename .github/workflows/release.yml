@@ -28,7 +28,17 @@ jobs:
         run: pnpm install
 
       - name: Build shared-types
-        run: pnpm --filter @umbra/shared-types build
+        working-directory: packages/shared-types
+        shell: bash
+        run: |
+          echo "--- tsc version ---"
+          npx tsc --version
+          echo "--- source files ---"
+          ls -la src/
+          echo "--- running tsc ---"
+          npx tsc --listEmittedFiles
+          echo "--- dist contents ---"
+          ls -la dist/ || echo "WARN: dist dir not found after build"
 
       - name: Verify shared-types dist
         shell: bash
