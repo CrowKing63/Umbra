@@ -32,7 +32,8 @@ jobs:
 
       - name: Verify shared-types dist
         shell: bash
-        run: echo "=== dist contents ===" && ls -la packages/shared-types/dist/ 2>&1 || echo "WARN: dist not found"
+        run: |
+          ls -la packages/shared-types/dist/ 2>&1 || echo "WARN: dist not found"
 
       - name: Build server
         run: pnpm --filter @umbra/server build
