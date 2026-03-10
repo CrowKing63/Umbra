@@ -2,6 +2,8 @@
   "name": "@umbra/desktop",
   "version": "0.0.2",
   "private": true,
+  "description": "Umbra desktop application - local-first Markdown writing server",
+  "author": "CrowKing63",
   "main": "./dist/main.js",
   "scripts": {
     "dev": "tsx watch src/main.ts",
@@ -14,11 +16,11 @@
   },
   "dependencies": {
     "@umbra/shared-types": "workspace:*",
-    "electron": "^28.0.0",
     "electron-updater": "^6.1.0"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",
+    "electron": "^28.0.0",
     "electron-builder": "^24.13.0",
     "png-to-ico": "^3.0.1",
     "tsx": "^4.7.0",
