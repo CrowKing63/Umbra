@@ -12,7 +12,7 @@
     "typecheck": "tsc --noEmit",
     "package": "pnpm build && electron-builder",
     "pack:win": "electron-builder --win",
-    "release": "electron-builder --win --publish=always"
+    "release": "pnpm build && electron-builder --win --publish=always"
   },
   "dependencies": {
     "@umbra/shared-types": "workspace:*",

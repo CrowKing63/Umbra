@@ -54,7 +54,9 @@ jobs:
         run: pnpm --filter @umbra/web build
 
       - name: Build desktop
-        run: pnpm --filter @umbra/desktop build
+        working-directory: apps/desktop
+        shell: bash
+        run: npx tsc --build --force
 
       - name: Set version from tag
         shell: bash

@@ -10,6 +10,7 @@ dist
 !packages/shared-types/dist/
 build
 out
+*.tsbuildinfo
 
 # Exception: NSIS installer script (source file, not build artifact)
 !apps/desktop/build/
