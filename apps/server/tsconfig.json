@@ -8,8 +8,5 @@
       "@umbra/shared-types": ["../../packages/shared-types/dist/index"]
     }
   },
-  "include": ["src/**/*"],
-  "references": [
-    { "path": "../../packages/shared-types" }
-  ]
+  "include": ["src/**/*"]
 }
