@@ -35,3 +35,5 @@ Thumbs.db
 # Local scripts / artifacts
 test-auth.js
 nul
+
+.claude
