@@ -72,6 +72,18 @@ All endpoints are under `/api/v1`. Responses follow `{ success: boolean, data?: 
 
 `API_BASE` is defined once in `apps/web/src/services/api.ts`; all web service files import it from there.
 
+In dev mode, Vite proxies `/api/v1` → `http://localhost:3847` (configured in `apps/web/vite.config.ts`), so the web dev server handles API calls transparently.
+
+### Web state management
+
+Uses React Context API — no external state library. Three contexts:
+
+- `FileContext` — selected file, editor content/dirty state, isSaving, wordCount, file operations
+- `AuthContext` — auth status, settings object, login/logout, session management
+- `ThemeContext` — theme switching
+
+Service layer in `apps/web/src/services/`: `fileService.ts`, `historyService.ts`, `searchService.ts`.
+
 ### Key web utilities
 
 - `getWordCount(text)` — canonical word count function in `apps/web/src/hooks/useCodeMirror.ts`; do not redefine locally.
@@ -85,6 +97,19 @@ All endpoints are under `/api/v1`. Responses follow `{ success: boolean, data?: 
 The server creates `.umbra-data/` relative to its `cwd` (not in the user's document root):
 - `settings.json` — persisted settings
 - Snapshots for history (managed by `history-service.ts`)
+
+### Desktop server spawn
+
+`apps/desktop/src/main.ts` spawns the server via `utilityProcess.fork()` (not `child_process`). Key env vars passed to the server process:
+- `UMBRA_STATIC_PATH` — path to web build output (`process.resourcesPath/web`)
+- `UMBRA_DATA_DIR` — app data directory for settings/snapshots
+- `NODE_ENV` — environment flag
+
+`waitForServer()` polls the health endpoint with 300ms retries up to 15s timeout before opening the window.
+
+### Tests and linting
+
+Neither is configured yet. `pnpm lint` and any test commands will fail — this is expected. Do not attempt to run them.
 
 ## Release automation
 
@@ -128,4 +153,4 @@ Incremental development is tracked in `docs/umbra-session-work-orders.md` (UMB-0
 docs/umbra-session-work-orders.md를 읽고 UMB-08만 수행해줘.
 ```
 
-Current status: UMB-01 through UMB-13 implemented, UMB-14 (hardening/packaging) partially complete. PDF export is a stub (returns raw markdown; client is responsible for rendering). Windows auto-start is pending.
+Current status: UMB-01 through UMB-14 substantially complete. PDF export is a stub (returns raw markdown; client is responsible for rendering). Windows auto-start (`app.setLoginItemSettings`) is pending.
