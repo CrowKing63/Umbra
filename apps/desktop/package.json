@@ -6,7 +6,7 @@
   "author": "CrowKing63",
   "main": "./dist/main.js",
   "scripts": {
-    "dev": "tsx watch src/main.ts",
+    "dev": "tsc --build && NODE_ENV=development electron .",
     "build": "tsc --build",
     "start": "electron .",
     "typecheck": "tsc --noEmit",

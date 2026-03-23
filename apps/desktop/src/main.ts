@@ -47,8 +47,12 @@ function waitForServer(port: number, timeout = 15000): Promise<void> {
 }
 
 function startServer(): void {
-  const serverScript = path.join(process.resourcesPath, 'server', 'index.js');
-  const webPath = path.join(process.resourcesPath, 'web');
+  const serverScript = app.isPackaged
+    ? path.join(process.resourcesPath, 'server', 'index.js')
+    : path.join(__dirname, '..', '..', 'server', 'dist', 'index.js');
+  const webPath = app.isPackaged
+    ? path.join(process.resourcesPath, 'web')
+    : path.join(__dirname, '..', '..', 'web', 'dist');
   const dataDir = app.getPath('userData');
 
   serverProcess = utilityProcess.fork(serverScript, [], {
@@ -106,7 +110,10 @@ function createTray() {
     {
       label: 'Settings',
       click: () => {
-        shell.openExternal(`http://localhost:${SERVER_PORT}/settings`);
+        const settingsUrl = isDev
+          ? `http://localhost:3848/settings`
+          : `http://127.0.0.1:${SERVER_PORT}/settings`;
+        shell.openExternal(settingsUrl);
       },
     },
     { type: 'separator' },
