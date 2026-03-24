@@ -1,5 +1,9 @@
-import { hash as argon2Hash, verify as argon2Verify, Algorithm } from '@node-rs/argon2';
 import crypto from 'crypto';
+import { promisify } from 'util';
+
+const scryptAsync = promisify(crypto.scrypt);
+const SALT_BYTES = 16;
+const KEY_BYTES = 64;
 
 const SESSION_MAX_AGE = 7 * 24 * 60 * 60 * 1000; // 7 days in ms
 const CLEANUP_INTERVAL = 60 * 60 * 1000; // 1 hour
@@ -22,17 +26,17 @@ setInterval(() => {
 }, CLEANUP_INTERVAL).unref();
 
 export async function hashPassword(password: string): Promise<string> {
-  return argon2Hash(password, {
-    algorithm: Algorithm.Argon2id,
-    memoryCost: 2 ** 16,
-    timeCost: 3,
-    parallelism: 1,
-  });
+  const salt = crypto.randomBytes(SALT_BYTES).toString('hex');
+  const key = (await scryptAsync(password, salt, KEY_BYTES)) as Buffer;
+  return `${salt}:${key.toString('hex')}`;
 }
 
-export async function verifyPassword(hash: string, password: string): Promise<boolean> {
+export async function verifyPassword(storedHash: string, password: string): Promise<boolean> {
   try {
-    return argon2Verify(hash, password);
+    const [salt, hash] = storedHash.split(':');
+    if (!salt || !hash) return false;
+    const key = (await scryptAsync(password, salt, KEY_BYTES)) as Buffer;
+    return crypto.timingSafeEqual(Buffer.from(hash, 'hex'), key);
   } catch {
     return false;
   }
