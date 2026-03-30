@@ -58,6 +58,11 @@ jobs:
         shell: bash
         run: npx tsc --build --force
 
+      - name: Install server production dependencies
+        working-directory: apps/server/release
+        shell: bash
+        run: npm install --no-package-lock
+
       - name: Set version from tag
         shell: bash
         run: |

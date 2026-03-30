@@ -41,7 +41,7 @@ const ERR_NOT_A_FILE = 'Path is not a file';
 const ERR_INVALID_EXT = 'File extension not allowed. Only .md and .txt are supported.';
 
 // Authentication middleware
-function requireAuth(request: FastifyRequest, reply: FastifyReply) {
+async function requireAuth(request: FastifyRequest, reply: FastifyReply) {
   const settings = getSettings();
   
   if (!settings.passwordEnabled) {

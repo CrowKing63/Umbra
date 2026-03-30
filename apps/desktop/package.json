@@ -46,6 +46,13 @@
         ]
       },
       {
+        "from": "../../apps/server/release/node_modules",
+        "to": "server/node_modules",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
         "from": "../../apps/web/dist",
         "to": "web",
         "filter": [
