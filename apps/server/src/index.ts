@@ -878,7 +878,7 @@ app.post('/api/v1/history/restore', async (request) => {
     // Serve web app static files in production (Electron sets UMBRA_STATIC_PATH)
     const staticPath = process.env.UMBRA_STATIC_PATH;
     if (staticPath && fs.existsSync(staticPath)) {
-      await app.register(fastifyStatic, { root: staticPath, prefix: '/', wildcard: false });
+      await app.register(fastifyStatic, { root: staticPath, prefix: '/' });
       // SPA fallback: serve index.html for client-side routes
       app.setNotFoundHandler((_request, reply) => {
         reply.sendFile('index.html', staticPath);

@@ -54,6 +54,7 @@ function startServer(): void {
     ? path.join(process.resourcesPath, 'web')
     : path.join(__dirname, '..', '..', 'web', 'dist');
   const dataDir = app.getPath('userData');
+  const logPath = path.join(dataDir, 'server.log');
 
   serverProcess = utilityProcess.fork(serverScript, [], {
     env: {
@@ -62,10 +63,22 @@ function startServer(): void {
       UMBRA_DATA_DIR: dataDir,
       NODE_ENV: 'production',
     },
+    stdio: 'pipe',
   });
 
+  const fs = require('fs') as typeof import('fs');
+  const logStream = fs.createWriteStream(logPath, { flags: 'w' });
+  serverProcess.stdout?.on('data', (data: Buffer) => logStream.write(data));
+  serverProcess.stderr?.on('data', (data: Buffer) => logStream.write(data));
+
   serverProcess.on('exit', (code) => {
-    console.log(`Server process exited with code ${code}`);
+    logStream.end();
+    if (code !== 0 && code !== null) {
+      dialog.showErrorBox(
+        'Umbra 서버 오류',
+        `서버가 종료되었습니다 (코드: ${code})\n로그: ${logPath}`
+      );
+    }
   });
 }
 
@@ -153,8 +166,12 @@ async function createWindow() {
     mainWindow.loadURL('http://localhost:3848');
     mainWindow.webContents.openDevTools();
   } else {
-    await waitForServer(SERVER_PORT).catch((err) => {
-      console.error('Server failed to start:', err);
+    await waitForServer(SERVER_PORT).catch((_err) => {
+      const logPath = path.join(app.getPath('userData'), 'server.log');
+      dialog.showErrorBox(
+        'Umbra 서버 시작 실패',
+        `서버가 15초 내에 시작되지 않았습니다.\n로그를 확인하세요: ${logPath}`
+      );
     });
     mainWindow.loadURL(`http://127.0.0.1:${SERVER_PORT}`);
   }
